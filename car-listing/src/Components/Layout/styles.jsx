@@ -45,5 +45,6 @@ export const SSidebarContainer = styled.div`
     /* Conditionally visible on mobile */
     @media (max-width: 900px) {
         display: ${(props) => (props.isSidebarVisible ? "block" : "none")};
+        margin-top: 150px;
     }
 `;

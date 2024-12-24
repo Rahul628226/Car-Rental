@@ -141,8 +141,8 @@ const Card = styled.div`
 
 const Header = styled.div`
   padding: 10px; /* Reduced padding for smaller screens */
-  position: relative;
-
+//   position: relative;
+   z-index:1;
   h2 {
     font-size: 1.5rem; /* Increased font size for larger cards */
     font-weight: bold;

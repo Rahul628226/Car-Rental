@@ -7,10 +7,17 @@ const Layout = ({ children }) => {
     // State to control sidebar visibility on mobile
     const [isSidebarVisible, setSidebarVisible] = useState(false);
 
+    const handleOpen = () => {
+        setSidebarVisible(true);
+    }
+
+    const handleClose = () => {
+        setSidebarVisible(false);
+    }
     return (
         <SLayout>
             <SHeader>
-                <Header />
+                <Header handleOpen={handleOpen} handleClose={handleClose}/>
             </SHeader>
             <SSidebarContainer isSidebarVisible={isSidebarVisible}>
                 <Sidebar />

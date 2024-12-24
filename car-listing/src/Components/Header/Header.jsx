@@ -1,17 +1,33 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
-import { FaSearch, FaAdjust, FaBars, FaUser, FaHeart, FaBell } from "react-icons/fa";
+import { FaSearch, FaAdjust, FaBars, FaUser, FaHeart, FaBell, FaTimes } from "react-icons/fa"; // Import FaTimes
 import { ThemeContext } from "./../../App";
 import { FaFilter } from "react-icons/fa";
-const Header = () => {
+
+const Header = ({ handleOpen, handleClose }) => {
+  const [menuOpen, setMenuOpen] = useState(false); // State to toggle menu
   const theme = useContext(ThemeContext);
+
+  // Toggle the menu open/close
+  const toggleMenu = () => {
+    setMenuOpen(prevState => !prevState);
+    if (menuOpen) {
+      handleClose(); // Call handleClose when closing the menu
+    } else {
+      handleOpen(); // Call handleOpen when opening the menu
+    }
+  };
 
   return (
     <HeaderContainer>
       {/* Mobile Top Bar */}
       <TopBar>
         <MenuIcon>
-          <FaBars />
+          {menuOpen ? (
+            <FaTimes onClick={toggleMenu} /> // Show FaTimes when menu is open
+          ) : (
+            <FaBars onClick={toggleMenu} /> // Show FaBars when menu is closed
+          )}
         </MenuIcon>
         <ProfileIcon>
           <FaUser />
@@ -61,6 +77,9 @@ const Header = () => {
     </HeaderContainer>
   );
 };
+
+
+
 
 const HeaderContainer = styled.div`
   display: flex;
