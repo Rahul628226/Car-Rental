@@ -103,7 +103,7 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 1fr); /* 1 card in a row for mobile */
   gap: 15px;
-  padding: 10px;
+  padding: 30px;
 
   
 
