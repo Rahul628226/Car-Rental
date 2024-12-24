@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { FaGasPump, FaUsers, FaCogs, FaHeart } from "react-icons/fa";
 import CarFilterSection from "./CarFilterSection";
+import { FaSignOutAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import RoundButton from "../Common/RoundButton";
 const CarListing = () => {
@@ -84,7 +85,7 @@ const CarListing = () => {
                       <Price>
                           <strong>${car.price}.00</strong>/day
                       </Price>
-                      <RentNowButton>Edit Details</RentNowButton>
+                    
                   </Footer>
                   </Link>
               </Card>
@@ -101,8 +102,8 @@ export default CarListing;
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 1fr); /* 1 card in a row for mobile */
-  gap: 20px;
-  padding: 20px;
+  gap: 15px;
+  padding: 10px;
 
   
 
@@ -115,7 +116,7 @@ const Container = styled.div`
   }
 
   @media (min-width: 1100px) {
-    grid-template-columns: repeat(3, 1fr); /* 3 cards in a row for larger screens */
+    grid-template-columns: repeat(4, 1fr); /* 3 cards in a row for larger screens */
   }
 
     @media (min-width: 1800px) {
@@ -130,7 +131,7 @@ const Card = styled.div`
   overflow: hidden;
   text-align: center;
   transition: transform 0.3s;
-  padding: 20px; /* Increased padding for larger card size */
+  padding: 15px; /* Increased padding for larger card size */
   
 
   &:hover {
@@ -154,7 +155,7 @@ const Header = styled.div`
   }
 `;
 
-const HeartIcon = styled(FaHeart)`
+const HeartIcon = styled(FaSignOutAlt)`
   color: #dcdcdc;
   position: absolute;
   top: 10px; /* Adjusted position for larger cards */
@@ -212,13 +213,21 @@ const RentNowButton = styled.button`
   background-color: ${({ theme }) => theme.primary};
   color: ${({ theme }) => theme.white};
   border: none;
-  padding: 10px 15px; /* Increased padding for larger buttons */
+  padding: 10px 15px; /* Default padding */
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem; /* Increased font size for larger buttons */
-  margin-left: 60px;
+  font-size: 1rem; /* Default font size */
+  margin-left: 50px;
 
   &:hover {
     background-color: ${({ theme }) => theme.active};
   }
+
+  /* Media query for mobile view (max-width: 600px) */
+  @media (max-width: 600px) {
+    padding: 8px 12px; /* Smaller padding for mobile */
+    font-size: 0.875rem; /* Smaller font size for mobile */
+    margin-left: 20px; /* Adjust margin for smaller screens */
+  }
 `;
+
