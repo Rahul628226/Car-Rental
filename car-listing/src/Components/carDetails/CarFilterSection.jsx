@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FaFilter } from "react-icons/fa";
 
 // Styled components with theme integration
 const FilterContainer = styled.div`
@@ -76,47 +75,13 @@ const Select = styled.select`
 `;
 
 const CarFilterSection = () => {
-  const [showFilters, setShowFilters] = useState(false);
+  
+
+
 
   return (
     <>
-      {/* Mobile Filter Button */}
-      <MobileFilterButton onClick={() => setShowFilters(!showFilters)}>
-        <FaFilter /> Filters
-      </MobileFilterButton>
-
-      {/* Mobile Filters */}
-      {showFilters && (
-        <MobileFilters>
-          <FilterSection>
-            <SearchBox type="text" placeholder="Search for cars..." />
-          </FilterSection>
-          <FilterSection>
-            <Select>
-              <option value="">Select Car Category</option>
-              <option value="SUV">SUV</option>
-              <option value="Sedan">Sedan</option>
-              <option value="Hatchback">Hatchback</option>
-            </Select>
-          </FilterSection>
-          <FilterSection>
-            <Select>
-              <option value="">Sold Cars</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </Select>
-          </FilterSection>
-          <FilterSection>
-            <Select>
-              <option value="">Select Capacity</option>
-              <option value="2">2</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="7">7</option>
-            </Select>
-          </FilterSection>
-        </MobileFilters>
-      )}
+   
 
       {/* Desktop Filters */}
       <FilterContainer>

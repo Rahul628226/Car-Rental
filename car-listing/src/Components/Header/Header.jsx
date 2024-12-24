@@ -3,10 +3,13 @@ import styled from "styled-components";
 import { FaSearch, FaAdjust, FaBars, FaUser, FaHeart, FaBell, FaTimes } from "react-icons/fa"; // Import FaTimes
 import { ThemeContext } from "./../../App";
 import { FaFilter } from "react-icons/fa";
+import CarDetailsFilterSection from "../carDetails/cardetailsFilter";
+
 
 const Header = ({ handleOpen, handleClose }) => {
   const [menuOpen, setMenuOpen] = useState(false); // State to toggle menu
   const theme = useContext(ThemeContext);
+
 
   // Toggle the menu open/close
   const toggleMenu = () => {
@@ -39,15 +42,10 @@ const Header = ({ handleOpen, handleClose }) => {
 
       {/* Mobile Search Section */}
       <MobileSearchContainer>
-        <SearchBarMobile>
-          <SearchIcon>
-            <FaSearch />
-          </SearchIcon>
-          <SearchInput type="text" placeholder="Search something here" />
-        </SearchBarMobile>
-        <FilterButton>
-          <FaFilter />
-        </FilterButton>
+      
+       
+         <CarDetailsFilterSection/>
+        
       </MobileSearchContainer>
 
       {/* Desktop Layout */}
@@ -138,7 +136,7 @@ const MobileLogo = styled.div`
 
 
 const MobileSearchContainer = styled.div`
-  display: flex;
+
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -183,6 +181,8 @@ const FilterButton = styled.div`
   color: ${(props) => props.theme.text};
   cursor: pointer;
   padding: 0 0.5rem;
+  justify-content: space-between;
+ 
 `;
 
 const DesktopLayout = styled.div`
