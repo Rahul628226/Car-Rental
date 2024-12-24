@@ -115,59 +115,61 @@ const MobileSearchContainer = styled.div`
 
 const CarDetailsFilterSection = () => {
   const location = useLocation();
-  const isCarListPage = location.pathname === "/car-list";
+  const isCarListPage = location.pathname === "http://localhost:5173/car-page";
   const [showFilters, setShowFilters] = useState(false);
+
+  const handleFilter = () => {
+  
+      setShowFilters(!showFilters);
+  
+  };
 
   return (
     <>
-      {isCarListPage && (
-        <>
-          {/* Mobile Search and Filter Button */}
-          <MobileSearchContainer>
-            <SearchBarMobile>
-              <SearchIcon>
-                <FaSearch />
-              </SearchIcon>
-              <SearchInput type="text" placeholder="Search something here" />
-            </SearchBarMobile>
-            <MobileFilterButton onClick={() => setShowFilters(!showFilters)}>
-              <FaFilter /> 
-            </MobileFilterButton>
-          </MobileSearchContainer>
+      {/* Mobile Search and Filter Button */}
+      <MobileSearchContainer>
+        <SearchBarMobile>
+          <SearchIcon>
+            <FaSearch />
+          </SearchIcon>
+          <SearchInput type="text" placeholder="Search something here" />
+        </SearchBarMobile>
+        <MobileFilterButton onClick={handleFilter}>
+          <FaFilter /> 
+        </MobileFilterButton>
+      </MobileSearchContainer>
 
-          {/* Filters */}
-          {showFilters && (
-            <MobileFilters>
-              <FilterSection>
-                <SearchBox type="text" placeholder="Search for cars..." />
-              </FilterSection>
-              <FilterSection>
-                <Select>
-                  <option value="">Select Car Category</option>
-                  <option value="SUV">SUV</option>
-                  <option value="Sedan">Sedan</option>
-                  <option value="Hatchback">Hatchback</option>
-                </Select>
-              </FilterSection>
-              <FilterSection>
-                <Select>
-                  <option value="">Sold Cars</option>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
-                </Select>
-              </FilterSection>
-              <FilterSection>
-                <Select>
-                  <option value="">Select Capacity</option>
-                  <option value="2">2</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="7">7</option>
-                </Select>
-              </FilterSection>
-            </MobileFilters>
-          )}
-        </>
+      {/* Mobile Filters */}
+      {showFilters && (
+        <MobileFilters>
+          <FilterSection>
+            <SearchBox type="text" placeholder="Search for cars..." />
+          </FilterSection>
+          <FilterSection>
+            <Select>
+              <option value="">Select Car Category</option>
+              <option value="SUV">SUV</option>
+              <option value="Sedan">Sedan</option>
+              <option value="Hatchback">Hatchback</option>
+            </Select>
+          </FilterSection>
+          <FilterSection>
+            <Select>
+              <option value="">Sold Cars</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </Select>
+          </FilterSection>
+          <FilterSection>
+            <Select>
+              <option value="">Select Capacity</option>
+              <option value="2">2</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="7">7</option>
+            </Select>
+          </FilterSection>
+        </MobileFilters>
       )}
     </>
   );
