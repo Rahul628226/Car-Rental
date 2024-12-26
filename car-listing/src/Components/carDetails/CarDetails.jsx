@@ -246,7 +246,7 @@ export default function CarDetails() {
         </FieldContainer>
 
         <FieldContainer>
-          <Label htmlFor="price">Price ($/day)</Label>
+          <Label htmlFor="price">Price</Label>
           <Input type="number" id="price" placeholder="Enter Price" />
         </FieldContainer>
 

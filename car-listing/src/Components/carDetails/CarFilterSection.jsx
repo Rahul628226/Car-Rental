@@ -65,6 +65,7 @@ const SearchBox = styled.input`
   border: 1px solid ${(props) => props.theme.formBorder};
   border-radius: 5px;
   width: 100%;
+  color: black;
 `;
 
 const Select = styled.select`
@@ -72,6 +73,7 @@ const Select = styled.select`
   border: 1px solid ${(props) => props.theme.formBorder};
   border-radius: 5px;
   width: 100%;
+  color: black;
 `;
 
 const CarFilterSection = () => {
