@@ -17,7 +17,7 @@ const allowedOrigins = [
     "http://localhost:5173",
     "http://localhost:5175",
     "http://localhost:5174",
-    "https://ecommerce-bot-n28c.onrender.com",
+    "https://car-listing-dashboard.netlify.app",
     
 ];
 app.use((req, res, next) => {
