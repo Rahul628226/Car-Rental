@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { ThemeContext } from "./../../App";
 import { FaFileUpload } from 'react-icons/fa'; // Importing a file upload icon
+import { useDispatch } from 'react-redux';
+import { addCar } from '../../Redux/Slicer/Vendor/CarDetails/CarDetails';
 
 const Container = styled.div`
   display: flex;
@@ -58,7 +60,7 @@ const Input = styled.input`
   width: 100%;
   box-sizing: border-box;
   background-color: #F6F7F9; /* Added background color */
-
+  color:black;
   &:focus {
     border-color: ${({ theme }) => theme.primary};
     outline: none;
@@ -74,7 +76,7 @@ const Select = styled.select`
   box-sizing: border-box;
   background-color: #F6F7F9; /* Added background color */
   transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for focus effects */
-
+  color:black;
   option {
     padding: 10px; /* Added padding for options for better touch targets */
   }
@@ -162,20 +164,62 @@ const UploadButton = styled.label`
 export default function CarDetails() {
   const theme = useContext(ThemeContext);
   const [images, setImages] = useState([]);
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    brand: '',
+    model: '',
+    vendorId: '',
+    color: '',
+    capacity: '',
+    fuelType: 'Petrol',
+    transmission: 'Automatic',
+    registrationNumber: '',
+    price: '',
+    carImage: '',
+    additionalFeatures: [],
+    category: '',
+    vehicleAge: '',
+    images: []
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    setFormData((prev) => {
+      const updatedFeatures = checked
+        ? [...prev.additionalFeatures, value]
+        : prev.additionalFeatures.filter((feature) => feature !== value);
+      return { ...prev, additionalFeatures: updatedFeatures };
+    });
+  };
+  
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setImages(prevImages => [...prevImages, ...files.map(file => URL.createObjectURL(file))]);
+    const newImages = files.map(file => URL.createObjectURL(file));
+    setImages(prevImages => [...prevImages, ...newImages]);
+    setFormData(prev => ({ ...prev, images: [...prev.images, ...files] }));
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
-    setImages(prevImages => [...prevImages, ...files.map(file => URL.createObjectURL(file))]);
+    const newImages = files.map(file => URL.createObjectURL(file));
+    setImages(prevImages => [...prevImages, ...newImages]);
+    setFormData(prev => ({ ...prev, images: [...prev.images, ...files] }));
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(addCar(formData));
   };
 
   return (
@@ -184,7 +228,7 @@ export default function CarDetails() {
       <Form>
         <FieldContainer>
           <Label htmlFor="brand">Brand</Label>
-          <Select id="brand">
+          <Select id="brand" name="brand" onChange={handleChange}>
             <option value="">Select Brand</option>
             <option value="Toyota">Toyota</option>
             <option value="BMW">BMW</option>
@@ -194,11 +238,18 @@ export default function CarDetails() {
 
         <FieldContainer>
           <Label htmlFor="model">Model</Label>
-          <Input type="text" id="model" placeholder="Enter Model" />
+          <Input
+            type="text"
+            id="model"
+            name="model"
+            value={formData.model}
+            onChange={handleChange}
+            placeholder="Enter Model"
+          />
         </FieldContainer>
 
         <FieldContainer>
-          <Label htmlFor="color">Color</Label>
+          <Label htmlFor="color" name="color" onChange={handleChange}>Color</Label>
           <Select id="color">
             <option value="">Select Color</option>
             <option value="Red">Red</option>
@@ -209,7 +260,7 @@ export default function CarDetails() {
 
         <FieldContainer>
           <Label htmlFor="capacity">Capacity (Seater)</Label>
-          <Select id="capacity">
+          <Select id="capacity" name="capacity" onChange={handleChange}>
             <option value="">Select Capacity</option>
             <option value="4">4</option>
             <option value="5">5</option>
@@ -219,7 +270,7 @@ export default function CarDetails() {
 
         <FieldContainer>
           <Label htmlFor="fuelType">Fuel Type</Label>
-          <Select id="fuelType">
+          <Select id="fuelType" name="fuelType" onChange={handleChange}>
             <option value="">Select Fuel Type</option>
             <option value="Petrol">Petrol</option>
             <option value="Diesel">Diesel</option>
@@ -230,41 +281,67 @@ export default function CarDetails() {
 
         <FieldContainer>
           <Label>Car Transmission</Label>
-          <RadioGroup>
+          <RadioGroup onChange={(e) => handleChange(e)}>
             <label>
-              <Input type="radio" name="transmission" value="Automatic" /> Automatic
+              <Input
+                type="radio"
+                name="transmission"
+                value="Automatic"
+                checked={formData.transmission === "Automatic"}
+              />{" "}
+              Automatic
             </label>
             <label>
-              <Input type="radio" name="transmission" value="Manual" /> Manual
+              <Input
+                type="radio"
+                name="transmission"
+                value="Manual"
+                checked={formData.transmission === "Manual"}
+              />{" "}
+              Manual
             </label>
           </RadioGroup>
         </FieldContainer>
 
+
         <FieldContainer>
           <Label htmlFor="registration">Registration Number</Label>
-          <Input type="text" id="registration" placeholder="Enter Registration Number" />
+          <Input type="text" id="registration" placeholder="Enter Registration Number" name="registrationNumber" onChange={handleChange} />
         </FieldContainer>
 
         <FieldContainer>
           <Label htmlFor="price">Price</Label>
-          <Input type="number" id="price" placeholder="Enter Price" />
+          <Input type="number" id="price" placeholder="Enter Price" name="price" onChange={handleChange} />
         </FieldContainer>
 
         <FieldContainer>
           <Label>Additional Features</Label>
           <CheckboxGroup>
             <label>
-              <Input type="checkbox" value="GPS" /> GPS
+              <Input
+                type="checkbox"
+                value="GPS"
+                checked={formData.additionalFeatures.includes("GPS")}
+                onChange={(e) => handleCheckboxChange(e)}
+              />{" "}
+              GPS
             </label>
             <label>
-              <Input type="checkbox" value="Bluetooth" /> Bluetooth
+              <Input
+                type="checkbox"
+                value="Bluetooth"
+                checked={formData.additionalFeatures.includes("Bluetooth")}
+                onChange={(e) => handleCheckboxChange(e)}
+              />{" "}
+              Bluetooth
             </label>
           </CheckboxGroup>
         </FieldContainer>
 
+
         <FieldContainer>
           <Label htmlFor="category">Car Category</Label>
-          <Select id="category">
+          <Select id="category" name="category" onChange={handleChange}>
             <option value="">Select Category</option>
             <option value="Sedan">Sedan</option>
             <option value="SUV">SUV</option>
@@ -276,7 +353,7 @@ export default function CarDetails() {
 
         <FieldContainer>
           <Label htmlFor="vehicleAge">Vehicle Age (in years)</Label>
-          <Input type="number" id="vehicleAge" placeholder="Enter Vehicle Age" />
+          <Input type="number" id="vehicleAge" placeholder="Enter Vehicle Age" name="vehicleAge" onChange={handleChange} />
         </FieldContainer>
 
         <ImageUploadContainer onDrop={handleDrop} onDragOver={handleDragOver}>

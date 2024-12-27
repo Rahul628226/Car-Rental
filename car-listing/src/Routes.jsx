@@ -4,6 +4,11 @@ import HomePage from "./Components/Pages/HomePage";
 import CarDetails from "./Components/carDetails/CarDetails";
 import CarListing from "./Components/carDetails/CarListing";
 import CarPage from "./Components/carDetails/CarPage";
+import Subscription from "./Components/AdminDashboard/Subscription/Subscription";
+import PricingDetails from "./Components/AdminDashboard/Subscription/Pricing";
+
+import CategoryManager from "./Components/carDetails/Carbrand/CategoryManager";
+import CarFeatures from "./Components/carDetails/CarFeature";
 
 const AppRoutes = () => {
     return (
@@ -15,6 +20,13 @@ const AppRoutes = () => {
             <Route path="/car-details" element={<CarDetails/>} />
             <Route path="/car-list" element={<CarListing/>} />
             <Route path="/car-page" element={<CarPage/>} />
+
+            {/* Subscription */}
+            <Route path="/create-subscription" element={<PricingDetails/>} />
+
+            <Route path="/create-carbrand" element={<CategoryManager/>} />
+
+            <Route path="/create-carFeature" element={<CarFeatures/>} />
         </Routes>
     );
 };

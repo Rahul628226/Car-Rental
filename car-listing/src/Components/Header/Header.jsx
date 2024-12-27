@@ -4,12 +4,19 @@ import { FaSearch, FaAdjust, FaBars, FaUser, FaHeart, FaBell, FaTimes } from "re
 import { ThemeContext } from "./../../App";
 import { FaFilter } from "react-icons/fa";
 import CarDetailsFilterSection from "../carDetails/cardetailsFilter";
+import RightSidebar from "../Common/RightSidebar";
 
 
 const Header = ({ handleOpen, handleClose }) => {
   const [menuOpen, setMenuOpen] = useState(false); // State to toggle menu
   const theme = useContext(ThemeContext);
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [sidebarContent, setSidebarContent] = useState("default");
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   // Toggle the menu open/close
   const toggleMenu = () => {
@@ -22,7 +29,7 @@ const Header = ({ handleOpen, handleClose }) => {
   };
 
   return (
-    <HeaderContainer>
+    <><HeaderContainer>
       {/* Mobile Top Bar */}
       <TopBar>
         <MenuIcon>
@@ -42,10 +49,10 @@ const Header = ({ handleOpen, handleClose }) => {
 
       {/* Mobile Search Section */}
       <MobileSearchContainer>
-      
-       
-         <CarDetailsFilterSection/>
-        
+
+
+        <CarDetailsFilterSection />
+
       </MobileSearchContainer>
 
       {/* Desktop Layout */}
@@ -62,17 +69,21 @@ const Header = ({ handleOpen, handleClose }) => {
         </SearchBarDesktop>
         <Actions>
           <ActionIcon>
-            <FaHeart />
+            <FaHeart   onClick={() => { setSidebarContent("wishlist"); toggleSidebar(); }}/>
           </ActionIcon>
           <ActionIcon>
-            <FaBell />
+            <FaBell onClick={() => { setSidebarContent("settings"); toggleSidebar(); }}/>
           </ActionIcon>
           <ActionIcon>
-            <FaUser />
+            <FaUser  onClick={() => { setSidebarContent("profile"); toggleSidebar(); }}/>
           </ActionIcon>
         </Actions>
       </DesktopLayout>
-    </HeaderContainer>
+    </HeaderContainer><RightSidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+        content={sidebarContent}
+      /></>
   );
 };
 

@@ -170,7 +170,7 @@ const HeartIcon = styled(FaSignOutAlt)`
 const ImageContainer = styled.div`
   img {
     width: 100%;
-    height: auto;
+    height: 200px;
   }
 `;
 
