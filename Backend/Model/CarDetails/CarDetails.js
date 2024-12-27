@@ -11,7 +11,7 @@ const carSchema = new mongoose.Schema({
   },
   vendorId:{
     type: String,
-    unique:true,
+   
   },
   color: {
     type: mongoose.Schema.Types.ObjectId, ref: 'CarColor',
@@ -40,10 +40,10 @@ const carSchema = new mongoose.Schema({
     required: true,
     min: 0, 
   },
-  carImage: {
+  carImage: [{
     type: String, 
     required: true,
-  },
+  }],
   additionalFeatures: [
     {
       type: mongoose.Schema.Types.ObjectId, ref: 'CarFeature',

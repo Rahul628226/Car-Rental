@@ -6,6 +6,7 @@ import { GlobalStyle } from "./Components/Styles/globalStyles";
 import { darkTheme, lightTheme } from "./Components/Styles/theme";
 import Layout from "./Components/Layout/Layout";
 import './index.css'
+import HomeRouter from "./Components/HomeRouter";
 export const ThemeContext = React.createContext(null);
 
 const App = () => {
@@ -16,11 +17,13 @@ const App = () => {
         <ThemeContext.Provider value={{ setTheme, theme }}>
             <ThemeProvider theme={themeStyle}>
                 <GlobalStyle />
-              
+                <HomeRouter/>
                 <>
+                    
                     <Layout>
                         <Routes />
                     </Layout>
+                    
                 </>
             </ThemeProvider>
         </ThemeContext.Provider>

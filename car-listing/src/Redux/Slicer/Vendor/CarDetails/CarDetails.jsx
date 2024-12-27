@@ -6,6 +6,7 @@ const API_URL = `${import.meta.env.VITE_API_URL}/api/vendor/cars`;
 // Initial State
 const initialState = {
   cars: [],
+  selectedCar: null,
   loading: false,
   error: null,
 };
@@ -24,6 +25,18 @@ const carSlice = createSlice({
       state.cars = action.payload;
     },
     fetchCarsFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    fetchCarByIdStart(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchCarByIdSuccess(state, action) {
+      state.loading = false;
+      state.selectedCar = action.payload;
+    },
+    fetchCarByIdFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
@@ -46,6 +59,9 @@ export const {
   fetchCarsStart,
   fetchCarsSuccess,
   fetchCarsFailure,
+  fetchCarByIdStart,
+  fetchCarByIdSuccess,
+  fetchCarByIdFailure,
   addCar,
   updateCar,
   deleteCar,
@@ -63,6 +79,20 @@ export const fetchCars = () => async dispatch => {
     }
   } catch (error) {
     dispatch(fetchCarsFailure(error.response?.data?.message || error.message));
+  }
+};
+
+export const fetchCarById = (id) => async dispatch => {
+  dispatch(fetchCarByIdStart());
+  try {
+    const response = await axios.get(`${API_URL}/${id}`);
+    if (response.data && response.data.car) {
+      dispatch(fetchCarByIdSuccess(response.data.car));
+    } else {
+      dispatch(fetchCarByIdFailure('Car not found.'));
+    }
+  } catch (error) {
+    dispatch(fetchCarByIdFailure(error.response?.data?.message || error.message));
   }
 };
 

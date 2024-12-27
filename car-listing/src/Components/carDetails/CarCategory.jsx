@@ -9,6 +9,7 @@ import {
 } from '../../Redux/Slicer/Vendor/CarDetails/carCategories';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;

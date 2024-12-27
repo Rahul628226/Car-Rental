@@ -172,9 +172,7 @@ const CarFeatures = () => {
                 </List>
             </ListContainer>
         </Container>
-<CarCategories/>
-            <CarColors />
-            <CarSeat/>
+           
 
         </>
     );

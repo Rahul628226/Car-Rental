@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
     SDivider,
     SLink,
@@ -6,59 +6,38 @@ import {
     SLinkIcon,
     SLinkLabel,
     SLinkNotification,
-    SLogo,
-    SSearch,
-    SSearchIcon,
     SSidebar,
-    SSidebarButton,
     STheme,
     SThemeLabel,
     SThemeToggler,
     SToggleThumb,
 } from "./styles";
-
-import { logoSVG } from "../../assets";
-
 import {
     AiOutlineApartment,
     AiOutlineHome,
-    AiOutlineLeft,
-    AiOutlineSearch,
+    AiOutlineDown,
     AiOutlineSetting,
 } from "react-icons/ai";
 import { MdLogout, MdOutlineAnalytics } from "react-icons/md";
-import { BsPeople } from "react-icons/bs";
-
 import { ThemeContext } from "./../../App";
 import { useMatch } from "react-router-dom";
 
 const Sidebar = () => {
-    const searchRef = useRef(null);
     const { setTheme, theme } = useContext(ThemeContext);
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [carAttributesOpen, setCarAttributesOpen] = useState(false); // Manage visibility of "Car Attributes"
 
-    const isMatch = (to) => Boolean(useMatch(to));
-
-    const searchClickHandler = () => {
-        if (!sidebarOpen) {
-            setSidebarOpen(true);
-            searchRef.current.focus();
-        } else {
-            
-        }
-    };
+    // Precompute matches for all routes to ensure consistent hook usage
+    const routeMatches = linksArray.concat(secondaryLinksArray.flatMap((item) => item.subcategories || [])).reduce((acc, item) => {
+        acc[item.to] = useMatch(item.to);
+        return acc;
+    }, {});
 
     return (
         <SSidebar isOpen={sidebarOpen}>
-            {/* <>
-                <SSidebarButton isOpen={sidebarOpen} onClick={() => setSidebarOpen((p) => !p)}>
-                    <AiOutlineLeft />
-                </SSidebarButton>
-            </> */}
-
-       
+            {/* Main Links */}
             {linksArray.map(({ icon, label, notification, to }) => (
-                <SLinkContainer key={label} isActive={isMatch(to)}>
+                <SLinkContainer key={label} isActive={!!routeMatches[to]}>
                     <SLink to={to} style={!sidebarOpen ? { width: `fit-content` } : {}}>
                         <SLinkIcon>{icon}</SLinkIcon>
                         {sidebarOpen && (
@@ -72,21 +51,69 @@ const Sidebar = () => {
                     </SLink>
                 </SLinkContainer>
             ))}
+
             <SDivider />
-            {secondaryLinksArray.map(({ icon, label }) => (
+
+            {/* Secondary Links */}
+            {secondaryLinksArray.map(({ icon, label, subcategories }) => (
                 <SLinkContainer key={label}>
-                    <SLink to="/" style={!sidebarOpen ? { width: `fit-content` } : {}}>
+                    {/* Parent Link */}
+                    <div
+                        onClick={() =>
+                            label === "Car Attributes" &&
+                            setCarAttributesOpen((prev) => !prev)
+                        }
+                        style={{
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            width: sidebarOpen ? "100%" : "fit-content",
+                        }}
+                    >
                         <SLinkIcon>{icon}</SLinkIcon>
-                        {sidebarOpen && <SLinkLabel>{label}</SLinkLabel>}
-                    </SLink>
+                        {sidebarOpen && (
+                            <>
+                                <SLinkLabel>{label}</SLinkLabel>
+                                {label === "Car Attributes" && (
+                                    <AiOutlineDown
+                                        style={{
+                                            marginLeft: "auto",
+                                            transform: carAttributesOpen
+                                                ? "rotate(180deg)"
+                                                : "rotate(0)",
+                                            transition: "transform 0.2s",
+                                        }}
+                                    />
+                                )}
+                            </>
+                        )}
+                    </div>
+
+                    {/* Subcategories */}
+                    {label === "Car Attributes" &&
+                        carAttributesOpen &&
+                        sidebarOpen && (
+                            <div style={{ marginLeft: "1.5rem" }}>
+                                {subcategories.map(({ label, to }) => (
+                                    <SLinkContainer key={label} isActive={!!routeMatches[to]}>
+                                        <SLink to={to}>
+                                            <SLinkLabel>{label}</SLinkLabel>
+                                        </SLink>
+                                    </SLinkContainer>
+                                ))}
+                            </div>
+                        )}
                 </SLinkContainer>
             ))}
+
             <SDivider />
+
+            {/* Theme Toggle */}
             <STheme>
                 {sidebarOpen && <SThemeLabel>Dark Mode</SThemeLabel>}
                 <SThemeToggler
                     isActive={theme === "dark"}
-                    onClick={() => setTheme((p) => (p === "light" ? "dark" : "light"))}
+                    onClick={() => setTheme((prev) => (prev === "light" ? "dark" : "light"))}
                 >
                     <SToggleThumb style={theme === "dark" ? { right: "1px" } : {}} />
                 </SThemeToggler>
@@ -94,6 +121,7 @@ const Sidebar = () => {
         </SSidebar>
     );
 };
+
 export default Sidebar;
 
 const linksArray = [
@@ -110,23 +138,24 @@ const linksArray = [
         notification: 3,
     },
     {
-        label: "Customers",
-        icon: <BsPeople />,
-        to: "/customers",
-        notification: 0,
-    },
-    {
-        label: "Diagrams",
+        label: "Subscription",
         icon: <AiOutlineApartment />,
-        to: "/diagrams",
+        to: "/create-subscription",
         notification: 1,
     },
 ];
 
 const secondaryLinksArray = [
     {
-        label: "Settings",
+        label: "Car Attributes",
         icon: <AiOutlineSetting />,
+        subcategories: [
+            { label: "Car Brand", to: "/create-carbrand" },
+            { label: "Car Categories", to: "/create-carcategories" },
+            { label: "Car Features", to: "/create-carFeature" },
+            { label: "Car Color", to: "/create-carcolors" },
+            { label: "Car Capacity", to: "/create-carseat" },
+        ],
     },
     {
         label: "Logout",

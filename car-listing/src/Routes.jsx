@@ -9,24 +9,34 @@ import PricingDetails from "./Components/AdminDashboard/Subscription/Pricing";
 
 import CategoryManager from "./Components/carDetails/Carbrand/CategoryManager";
 import CarFeatures from "./Components/carDetails/CarFeature";
+import EditCarDetails from "./Components/carDetails/EditCarDetails";
+import LoginPage from "./Components/Common/LoginPage";
+import CarSeat from "./Components/carDetails/CarSeat";
+import CarColors from "./Components/carDetails/CarColors";
+import CarCategories from "./Components/carDetails/CarCategory";
+
 
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route path="/" element={<HomePage />} />
+            
             <Route path="/statistics" element={<h1>Statistics Page</h1>} />
             <Route path="/customers" element={<h1>Customers Page</h1>} />
             <Route path="/diagrams" element={<h1>Diagrams Page</h1>} />
             <Route path="/car-details" element={<CarDetails/>} />
             <Route path="/car-list" element={<CarListing/>} />
-            <Route path="/car-page" element={<CarPage/>} />
+            <Route path="/car-page/:carId" element={<CarPage/>} />
 
             {/* Subscription */}
             <Route path="/create-subscription" element={<PricingDetails/>} />
 
             <Route path="/create-carbrand" element={<CategoryManager/>} />
+            <Route path="/create-carseat" element={<CarSeat/>} />
+            <Route path="/create-carcolors" element={<CarColors/>} />
+            <Route path="/create-carcategories" element={<CarCategories/>} />
 
             <Route path="/create-carFeature" element={<CarFeatures/>} />
+            <Route path="/cardetails" element={<EditCarDetails/>} />
         </Routes>
     );
 };
