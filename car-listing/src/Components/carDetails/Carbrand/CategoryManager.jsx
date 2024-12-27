@@ -181,9 +181,9 @@ const CategoryManager = () => {
 
     const handleDeleteItem = (type, id, name) => {
         if (window.confirm(`Are you sure you want to delete ${name}?`)) {
-            if (type === 'Category 1') {
+            if (type === 'Car Brand Name') {
                 dispatch(deleteMainCategory(id));
-            } else if (type === 'Category 2') {
+            } else if (type === 'Car Model Name') {
                 dispatch(deleteCategory(id));
             } 
            
@@ -192,14 +192,14 @@ const CategoryManager = () => {
 
     const handleDialogSubmit = async (name) => {
         setOpenDialog(false);
-        if (dialogType === 'Category 1') {
+        if (dialogType === 'Car Brand Name') {
             if (currentItem) {
                 await dispatch(updateMainCategory({ ...currentItem, name, id: selectedMainCategory })); // Update main category
             } else {
                 await dispatch(addMainCategory(name));
             }
             dispatch(fetchMainCategories()); // Fetch updated main categories after adding
-        } else if (dialogType === 'Category 2') {
+        } else if (dialogType === 'Car Model Name') {
             if (currentItem) {
                 await dispatch(updateCategory({ ...currentItem, name, id: selectedCategory })); // Update category
             } else {
