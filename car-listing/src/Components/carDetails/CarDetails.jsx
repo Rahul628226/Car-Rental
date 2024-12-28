@@ -330,7 +330,7 @@ export default function CarDetails() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     // Validation
     if (!formData.brand) {
       toast.error('Please select a brand');
@@ -364,19 +364,15 @@ export default function CarDetails() {
       toast.error('Please enter vehicle age');
       return;
     }
-    if (formData.images.length === 0) {
+    if (!formData.images || formData.images.length === 0) {
       toast.error('Please upload at least one image');
       return;
     }
-
+  
     try {
       const result = await dispatch(createCar(formData));
-
-      if(result.error)
-      {
-       toast.success(result.message); 
-      }
       toast.success('Car added successfully!');
+  
       // Reset form
       setFormData({
         brand: '',
@@ -388,19 +384,20 @@ export default function CarDetails() {
         transmission: 'Automatic',
         registrationNumber: '',
         price: '',
-        carImage: [],
+        images: [], // Ensure the field matches validation
         additionalFeatures: [],
         category: '',
-        vehicleAge: '',
-        images: []
+        vehicleAge: ''
       });
       setImages([]);
       setSelectedMainCat('');
       setSelectedCat('');
     } catch (error) {
+      console.error('Error adding car:', error);
       toast.error(error.message || 'Failed to add car');
     }
   };
+  
 
   return (
     <Container>

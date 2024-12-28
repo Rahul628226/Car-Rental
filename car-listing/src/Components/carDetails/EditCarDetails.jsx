@@ -157,6 +157,36 @@ const Image = styled.img`
   border: 1px solid #ccc;
 `;
 
+
+const AddToSoldButton = styled.button`
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darkred;
+  }
+
+  &:active {
+    background-color: crimson;
+  }
+
+  &:focus {
+    outline: 2px solid white;
+  }
+
+  &:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+  }
+`;
+
 const RemoveButton = styled.button`
   position: absolute;
   top: 5px;
@@ -189,7 +219,7 @@ const AddImageButton = styled.button`
   }
 `;
 
-const EditCarDetails = ({carId}) => {
+const EditCarDetails = ({ carId }) => {
     const dispatch = useDispatch();
     const { selectedCar, loading, error } = useSelector((state) => state.car);
     const { categories: carCategories } = useSelector(
@@ -341,7 +371,16 @@ const EditCarDetails = ({carId}) => {
         <EditCarContainer>
             <ToastContainer />
             <Title>Edit Car Details</Title>
+
             <Form onSubmit={handleSubmit}>
+
+                <FormGroup>
+
+                </FormGroup>
+                <FormGroup>
+                    <AddToSoldButton>Add To Sold List</AddToSoldButton>
+                </FormGroup>
+
                 <FormGroup>
                     <Label htmlFor="brand">Brand</Label>
                     <Select
@@ -506,7 +545,7 @@ const EditCarDetails = ({carId}) => {
                         {formData.carImage.map((image, index) => (
                             <ImageContainer key={index}>
                                 <Image src={image} alt={`Car ${index + 1}`} />
-                                <RemoveButton onClick={() => handleRemoveImage(index)}><FaTrash/></RemoveButton>
+                                <RemoveButton onClick={() => handleRemoveImage(index)}><FaTrash /></RemoveButton>
                             </ImageContainer>
                         ))}
                     </ImageGrid>
