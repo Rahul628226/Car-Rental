@@ -14,6 +14,7 @@ import LoginPage from "./Components/Common/LoginPage";
 import CarSeat from "./Components/carDetails/CarSeat";
 import CarColors from "./Components/carDetails/CarColors";
 import CarCategories from "./Components/carDetails/CarCategory";
+import Tags from "./Components/carDetails/Tags/Tags";
 
 
 const AppRoutes = () => {
@@ -37,6 +38,8 @@ const AppRoutes = () => {
 
             <Route path="/create-carFeature" element={<CarFeatures/>} />
             <Route path="/cardetails" element={<EditCarDetails/>} />
+
+            <Route path="/create-tags" element={<Tags/>} />
         </Routes>
     );
 };

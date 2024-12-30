@@ -6,6 +6,7 @@ import seatReducer from './Slicer/Vendor/CarDetails/Seat';
 import carCategoryReducer from './Slicer/Vendor/CarDetails/carCategories';
 import carFeaturesReducer from './Slicer/Vendor/CarDetails/carFeaturesSlice';
 import carColorsReducer from './Slicer/Vendor/CarDetails/carColorsSlice';
+import featureTagReducer from './Slicer/Vendor/CarDetails/FeatureTag/FeatureTag'
 const store = configureStore({
   reducer: {
     
@@ -17,6 +18,7 @@ const store = configureStore({
     carCategories: carCategoryReducer,
     carFeatures: carFeaturesReducer,
     carColors: carColorsReducer,
+    featureTag: featureTagReducer,
   },
 });
 

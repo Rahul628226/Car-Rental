@@ -99,7 +99,7 @@ const Select = styled.select`
 `;
 
 const CheckboxGroup = styled.div`
-  display: flex;
+//   display: flex;
   gap: 10px; /* Adjusted to align checkboxes and labels in the same row */
   align-items: center; /* Align items vertically centered */
   

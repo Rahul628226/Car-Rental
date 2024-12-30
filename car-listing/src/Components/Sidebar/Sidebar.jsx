@@ -143,6 +143,12 @@ const linksArray = [
         to: "/create-subscription",
         notification: 1,
     },
+    {
+        label: "Feature Tags",
+        icon: <AiOutlineApartment />,
+        to: "/create-tags",
+        notification: 1,
+    },
 ];
 
 const secondaryLinksArray = [

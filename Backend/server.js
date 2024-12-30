@@ -101,6 +101,9 @@ app.use('/api',CarFeatureRouter);
 const CarColorRouter = require('./Router/CarDetails/CarColor');
 app.use('/api',CarColorRouter);
 
+const FeatureTag =require('./Router/CarDetails/FeatureTag/FeatureTag')
+app.use('/api',FeatureTag);
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
