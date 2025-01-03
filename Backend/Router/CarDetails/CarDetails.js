@@ -14,32 +14,38 @@ const s3 = new S3Client({
   },
 });
 
+// Helper function to upload images to S3
+async function uploadImagesToS3(images) {
+  const uploadedImages = [];
+  for (const image of images) {
+    const fileName = `cars/${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
+    const params = {
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: fileName,
+      Body: Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""), 'base64'),
+      ContentType: 'image/jpeg',
+      ACL: "public-read",
+    };
+    await s3.send(new PutObjectCommand(params));
+    const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`;
+    uploadedImages.push(fileUrl);
+  }
+  return uploadedImages;
+}
+
 // Create a new car
 router.post('/cars', async (req, res) => {
   try {
-    const { images, ...carData } = req.body;
+    const { images, exteriorImages, ...carData } = req.body;
     
     // Upload images to S3
-    const uploadedImages = [];
-    for (const image of images) {
-      const fileName = `cars/${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
-      
-      const params = {
-        Bucket: process.env.S3_BUCKET_NAME,
-        Key: fileName,
-        Body: Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""), 'base64'),
-        ContentType: 'image/jpeg',
-        ACL: "public-read",
-      };
-
-      await s3.send(new PutObjectCommand(params));
-      const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`;
-      uploadedImages.push(fileUrl);
-    }
+    const uploadedCarImages = await uploadImagesToS3(images);
+    const uploadedExteriorImages = await uploadImagesToS3(exteriorImages);
 
     const car = new Car({
       ...carData,
-      carImage: uploadedImages
+      carImage: uploadedCarImages,
+      exteriorImages: uploadedExteriorImages
     });
     await car.save();
     res.status(201).json({ message: 'Car created successfully', car });
@@ -51,27 +57,18 @@ router.post('/cars', async (req, res) => {
 // Update a car by _id
 router.put('/cars/:id', async (req, res) => {
   try {
-    const { images, ...updateData } = req.body;
+    const { images, exteriorImages, ...updateData } = req.body;
     
     if (images) {
-      // Upload new images to S3
-      const uploadedImages = [];
-      for (const image of images) {
-        const fileName = `cars/${Date.now()}-${Math.random().toString(36).substring(7)}.jpg`;
-        
-        const params = {
-          Bucket: process.env.S3_BUCKET_NAME,
-          Key: fileName,
-          Body: Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""), 'base64'),
-          ContentType: 'image/jpeg',
-          ACL: "public-read",
-        };
+      // Upload new car images to S3
+      const uploadedCarImages = await uploadImagesToS3(images);
+      updateData.carImage = uploadedCarImages;
+    }
 
-        await s3.send(new PutObjectCommand(params));
-        const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`;
-        uploadedImages.push(fileUrl);
-      }
-      updateData.carImage = uploadedImages;
+    if (exteriorImages) {
+      // Upload new exterior images to S3
+      const uploadedExteriorImages = await uploadImagesToS3(exteriorImages);
+      updateData.exteriorImages = uploadedExteriorImages;
     }
 
     const updatedCar = await Car.findByIdAndUpdate(
@@ -132,8 +129,6 @@ router.delete('/cars/:id', async (req, res) => {
     res.status(500).json({ message: 'Error deleting car', error: error.message });
   }
 });
-
-
 
 router.get('/cars/:id', async (req, res) => {
   try {

@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchFeatureTags, updateFeatureTag, deleteFeatureTag } from '../../../Store/Slicer/Dashboard/FeatureTag/FeatureTag';
+import {
+  fetchFeatureTags,
+  updateFeatureTag,
+  deleteFeatureTag,
+} from '../../../Redux/Slicer/Vendor/CarDetails/FeatureTag/FeatureTag';
 import { FaTrash } from 'react-icons/fa';
 
 const FeaturetagDropdown = ({ productId }) => {
@@ -12,17 +16,17 @@ const FeaturetagDropdown = ({ productId }) => {
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(fetchFeatureTags()).unwrap().then((data) => {
-        console.log('Fetched feature tags:', data); // Debugging fetched tags
-      }).catch((error) => {
-        console.error('Failed to fetch feature tags:', error);
-      });
+      dispatch(fetchFeatureTags())
+        .unwrap()
+        .catch((error) => console.error('Failed to fetch feature tags:', error));
     }
   }, [status, dispatch]);
 
   useEffect(() => {
     if (productId) {
-      const filteredTags = featureTags.filter(tag => tag.products.some(product => product._id === productId));
+      const filteredTags = featureTags.filter((tag) =>
+        tag.products.some((product) => product._id === productId)
+      );
       setRelatedFeatureTags(filteredTags);
     } else {
       setRelatedFeatureTags([]);
@@ -36,20 +40,19 @@ const FeaturetagDropdown = ({ productId }) => {
     }
 
     try {
-      const selectedFeatureTag = featureTags.find(tag => tag._id === selectedFeatureTagId);
-      if (!selectedFeatureTag) {
-        console.error('Selected feature tag not found');
-        return;
-      }
+      const selectedFeatureTag = featureTags.find((tag) => tag._id === selectedFeatureTagId);
+      if (!selectedFeatureTag) return;
 
       const updatedProducts = [...selectedFeatureTag.products, { _id: productId }];
-      await dispatch(updateFeatureTag({
-        id: selectedFeatureTagId,
-        updatedFeatureTag: { ...selectedFeatureTag, products: updatedProducts }
-      })).unwrap();
+      await dispatch(
+        updateFeatureTag({
+          id: selectedFeatureTagId,
+          updatedFeatureTag: { ...selectedFeatureTag, products: updatedProducts },
+        })
+      ).unwrap();
 
       alert('Product ID added successfully');
-      dispatch(fetchFeatureTags()); // Refresh tags after update
+      dispatch(fetchFeatureTags());
     } catch (error) {
       console.error('Error updating feature tag:', error);
     }
@@ -58,39 +61,46 @@ const FeaturetagDropdown = ({ productId }) => {
   const handleDeleteProduct = async (tagId, productId) => {
     try {
       await dispatch(deleteFeatureTag({ tagId, productId })).unwrap();
-      dispatch(fetchFeatureTags()); // Refresh tags after deletion
+      dispatch(fetchFeatureTags());
     } catch (error) {
       console.error('Error deleting product from feature tag:', error);
     }
   };
 
   return (
-    <div className="pt-5 flex flex-col items-center">
-      <div className="flex items-center gap-2.5 mb-5">
-        <label className="mr-2.5">Featured Categories:</label>
+    <div className="pt-5 flex flex-col items-center sm:items-start">
+      <div className="flex flex-col sm:flex-row items-center gap-2.5 mb-5 w-full sm:w-auto">
+        <label htmlFor="feature-tag-select" className="mr-2.5">
+          Featured Categories:
+        </label>
         <select
+          id="feature-tag-select"
           value={selectedFeatureTagId}
           onChange={(e) => setSelectedFeatureTagId(e.target.value)}
-          className="p-2 w-[200px] h-[45px] border border-black bg-white"
+          className="p-2 w-full sm:w-[200px] h-[45px] border border-black bg-white rounded-md text-black"
         >
-          <option value="" disabled>Select Feature Tag</option>
+          <option value="" disabled>
+            Select Feature Tag
+          </option>
           {featureTags.map((tag) => (
             <option key={tag._id} value={tag._id}>
               {tag.featureName}
             </option>
           ))}
         </select>
-        <button 
-        color="orange"
+        <button
           onClick={handleUpdate}
-          className="px-4 py-2 bg-orange-600  text-white border-none cursor-pointer h-[45px] w-[120px] "
+          className="px-4 py-2 bg-orange-600 text-white rounded-md border-none cursor-pointer w-full sm:w-[120px] h-[45px]"
         >
-          UPDATE
+          Update
         </button>
       </div>
       <div className="w-full max-w-[520px]">
         {relatedFeatureTags.map((tag) => (
-          <div key={tag._id} className="flex items-center mb-2.5">
+          <div
+            key={tag._id}
+            className="flex items-center justify-between bg-white shadow-md p-4 mb-2 rounded-lg text-black"
+          >
             <p className="m-0 flex-grow">{tag.featureName}</p>
             <FaTrash
               onClick={() => handleDeleteProduct(tag._id, productId)}

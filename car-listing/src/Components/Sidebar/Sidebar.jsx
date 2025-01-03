@@ -21,12 +21,19 @@ import {
 import { MdLogout, MdOutlineAnalytics } from "react-icons/md";
 import { ThemeContext } from "./../../App";
 import { useMatch } from "react-router-dom";
+import GuidedTour from "../Common/GuidedTour";
 
 const Sidebar = () => {
     const { setTheme, theme } = useContext(ThemeContext);
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [carAttributesOpen, setCarAttributesOpen] = useState(false); // Manage visibility of "Car Attributes"
-
+    const steps = [
+        {
+          target: '.step-1',
+          content: 'Here you can view all cars.',
+          placement: 'bottom',
+        },
+      ];
     // Precompute matches for all routes to ensure consistent hook usage
     const routeMatches = linksArray.concat(secondaryLinksArray.flatMap((item) => item.subcategories || [])).reduce((acc, item) => {
         acc[item.to] = useMatch(item.to);
@@ -38,7 +45,7 @@ const Sidebar = () => {
             {/* Main Links */}
             {linksArray.map(({ icon, label, notification, to }) => (
                 <SLinkContainer key={label} isActive={!!routeMatches[to]}>
-                    <SLink to={to} style={!sidebarOpen ? { width: `fit-content` } : {}}>
+                    <SLink to={to} style={!sidebarOpen ? { width: `fit-content` } : {}} className={label === "Our Cars" ? "step-1" : ""}>
                         <SLinkIcon>{icon}</SLinkIcon>
                         {sidebarOpen && (
                             <>
@@ -49,6 +56,10 @@ const Sidebar = () => {
                             </>
                         )}
                     </SLink>
+                    {/* Add the GuidedTour here for "Our Cars" link */}
+                    {/* {label === "Our Cars"  && (
+                         <GuidedTour stepNo={1} steps={steps} />
+                    )} */}
                 </SLinkContainer>
             ))}
 
@@ -69,6 +80,7 @@ const Sidebar = () => {
                             alignItems: "center",
                             width: sidebarOpen ? "100%" : "fit-content",
                         }}
+                        
                     >
                         <SLinkIcon>{icon}</SLinkIcon>
                         {sidebarOpen && (
@@ -93,10 +105,10 @@ const Sidebar = () => {
                     {label === "Car Attributes" &&
                         carAttributesOpen &&
                         sidebarOpen && (
-                            <div style={{ marginLeft: "1.5rem" }}>
+                            <div style={{ marginLeft: "1.5rem" }} >
                                 {subcategories.map(({ label, to }) => (
                                     <SLinkContainer key={label} isActive={!!routeMatches[to]}>
-                                        <SLink to={to}>
+                                        <SLink to={to} >
                                             <SLinkLabel>{label}</SLinkLabel>
                                         </SLink>
                                     </SLinkContainer>
@@ -141,12 +153,6 @@ const linksArray = [
         label: "Subscription",
         icon: <AiOutlineApartment />,
         to: "/create-subscription",
-        notification: 1,
-    },
-    {
-        label: "Feature Tags",
-        icon: <AiOutlineApartment />,
-        to: "/create-tags",
         notification: 1,
     },
 ];

@@ -4,6 +4,10 @@ const cors = require('cors');
 const session = require('express-session');
 const connectDB = require("./config/dbConnection");
 
+//google login
+const passport = require('passport');
+require('./Router/Vendor/Passport');
+
 const app = express();
 const port =process.env.PORT || 5000;
 
@@ -73,7 +77,9 @@ app.use(express.urlencoded({ extended: true }));
 const errorHandler = require("./middleware/errorHandler");
 app.use(errorHandler);
 
-
+// Initialize passport and connect it to the session
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 //Router - Middleware
@@ -103,6 +109,28 @@ app.use('/api',CarColorRouter);
 
 const FeatureTag =require('./Router/CarDetails/FeatureTag/FeatureTag')
 app.use('/api',FeatureTag);
+
+
+
+// vendor login
+const googleAuth = require('./Router/Vendor/googleAuth');
+const vendorReg = require('./Router/Vendor/VendorReg');
+const vendorLogin = require('./Router/Vendor/VendorLogin');
+const emailRouter = require('./Router/EmailRouter');
+const vendorDetails = require('./Router/Vendor/VendorDetails');
+const subScriptionRouter = require('./Router/Vendor/Subscription');
+const tokenExpire= require('./middleware/TokenExpire');
+
+const chatgpt =require('./Router/OpenAi/Chatgpt')
+
+app.use('/api', vendorLogin);
+app.use('/api', vendorReg);
+app.use('/api', googleAuth);
+app.use('/api', emailRouter);
+app.use('/api', vendorDetails);
+app.use('/api', subScriptionRouter);
+app.use('/api', tokenExpire);
+app.use('/api', chatgpt);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

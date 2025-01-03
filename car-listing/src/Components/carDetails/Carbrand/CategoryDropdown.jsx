@@ -107,7 +107,7 @@ const CategoryDropdowns = ({ onMainCategoryChange, onCategoryChange, onSubcatego
 
     return (
         <Container>
-            {/* <ToastContainer /> */}
+           
             <DropdownsRow>
                 <DropdownContainer>
                     <Select id="mainCategory" value={selectedMainCat._id || ''} onChange={handleMainCategoryChange}>

@@ -14,7 +14,7 @@ const carSchema = new mongoose.Schema({
    
   },
   color: {
-    type: mongoose.Schema.Types.ObjectId, ref: 'CarColor',
+    type:String,
     required: true,
   },
   capacity: {
@@ -55,6 +55,46 @@ const carSchema = new mongoose.Schema({
   },
   vehicleAge: {
     type: Number,
+    required: true,
+  },
+  yearOfManufacture:{
+    type: Number,
+    required: true,
+  },
+  exteriorImages: [{
+    type: String, 
+    required: true,
+  }],
+  vin: {
+    type: Number,
+    required: true,
+  },
+  mileage: {
+    type: Number,
+    required: true,
+  },
+  doors: {
+    type: Number,
+    required: true,
+  },
+  driveTerrain: {
+    type: String,
+    required: true,
+  },
+  tireCondition: {
+    type: String,
+    required: true,
+  },
+  tradingOption: {
+    type: String,
+    required: true,
+  },
+  priceNegotiation: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
     required: true,
   },
 });

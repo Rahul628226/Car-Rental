@@ -15,7 +15,10 @@ export const lightTheme = {
     cardBorder: "rgb(200, 200, 200)", // Border color for car listing cards
     cardText: "rgb(45, 45, 45)", // Text color for car listing details
     cardHover: "rgba(52, 131, 235, 0.1)", // Hover effect for car listing cards
-    carbg:"linear-gradient(120deg, #005bea, #00c6fb)"
+    carbg:"linear-gradient(120deg, #005bea, #00c6fb)",
+    info: "#007bff",
+    warning: "#ffcd39",
+    success: "#28a745",
 };
 
 export const darkTheme = {
@@ -35,5 +38,8 @@ export const darkTheme = {
     cardBorder: "rgb(70, 70, 70)", // Border color for car listing cards
     cardText: "rgb(210, 210, 210)", // Text color for car listing details
     cardHover: "rgba(52, 131, 235, 0.2)", // Hover effect for car listing cards
-    carbg: "linear-gradient(120deg, #2c3e50, #34495e)"
+    carbg: "linear-gradient(120deg, #2c3e50, #34495e)",
+    info: "#0d6efd",
+    warning: "#ffc107",
+    success: "#198754",
 };

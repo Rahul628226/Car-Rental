@@ -1,19 +1,24 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaSearch, FaAdjust, FaBars, FaUser, FaHeart, FaBell, FaTimes } from "react-icons/fa"; // Import FaTimes
 import { ThemeContext } from "./../../App";
 import { FaFilter } from "react-icons/fa";
 import CarDetailsFilterSection from "../carDetails/cardetailsFilter";
 import RightSidebar from "../Common/RightSidebar";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchVendorInfo } from "../../Redux/Slicer/Vendor/VendorReg/VendorReg";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Header = ({ handleOpen, handleClose }) => {
   const [menuOpen, setMenuOpen] = useState(false); // State to toggle menu
   const theme = useContext(ThemeContext);
+  let message=''
+  const dispatch = useDispatch();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [sidebarContent, setSidebarContent] = useState("default");
-
+  const { vendor, loading } = useSelector((state) => state.vendor);
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -28,9 +33,26 @@ const Header = ({ handleOpen, handleClose }) => {
     }
   };
 
+
+  useEffect(() => {
+    const vendorId = localStorage.getItem('id');
+    const token = localStorage.getItem('token');
+    if (vendorId && token && !vendor) {
+      dispatch(fetchVendorInfo(vendorId)).then(() => {
+
+      });
+    }
+    message = vendor?.firstname || vendor?.email
+    if (message) {
+      toast.success(`Welcome Back ${message}`);
+    }
+  }, [dispatch, vendor]);
+
+
+
   return (
     <><HeaderContainer>
-      {/* Mobile Top Bar */}
+
       <TopBar>
         <MenuIcon>
           {menuOpen ? (
@@ -69,13 +91,13 @@ const Header = ({ handleOpen, handleClose }) => {
         </SearchBarDesktop>
         <Actions>
           <ActionIcon>
-            <FaHeart   onClick={() => { setSidebarContent("wishlist"); toggleSidebar(); }}/>
+            <FaHeart onClick={() => { setSidebarContent("wishlist"); toggleSidebar(); }} />
           </ActionIcon>
           <ActionIcon>
-            <FaBell onClick={() => { setSidebarContent("settings"); toggleSidebar(); }}/>
+            <FaBell onClick={() => { setSidebarContent("settings"); toggleSidebar(); }} />
           </ActionIcon>
           <ActionIcon>
-            <FaUser  onClick={() => { setSidebarContent("profile"); toggleSidebar(); }}/>
+            <FaUser onClick={() => { setSidebarContent("profile"); toggleSidebar(); }} />
           </ActionIcon>
         </Actions>
       </DesktopLayout>
@@ -83,6 +105,7 @@ const Header = ({ handleOpen, handleClose }) => {
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
         content={sidebarContent}
+        message={vendor}
       /></>
   );
 };

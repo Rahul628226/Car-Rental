@@ -34,13 +34,15 @@ const Overlay = styled.div`
   z-index: 1000;
 `;
 
-const RightSidebar = ({ isOpen, toggleSidebar, content }) => {
+const RightSidebar = ({ isOpen, toggleSidebar, content,message }) => {
   const renderContent = () => {
     switch (content) {
       case "wishlist":
         return <div>Your Wishlist Items</div>;
       case "profile":
-        return <div>Your Profile Settings</div>;
+        return <div>
+          {message?.firstname || message?.email}
+        </div>;
       case "settings":
         return <div>App Settings</div>;
       default:

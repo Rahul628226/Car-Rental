@@ -1,13 +1,13 @@
 import React from 'react';
-import { FaPlus } from 'react-icons/fa'; // Import the plus icon
+import { FaPlus } from 'react-icons/fa';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const AddButton = styled.button`
   position: fixed;
-  bottom: 20px; /* Adjust the distance from the bottom */
-  right: 20px; /* Adjust the distance from the right */
-  background-color: ${({ theme }) => theme.primaryColor || '#007bff'}; /* Customize color */
+  bottom: 20px;
+  right: 20px;
+  background-color: ${({ theme }) => theme.primaryColor || '#007bff'};
   border: none;
   border-radius: 50%;
   width: 60px;
@@ -22,7 +22,7 @@ const AddButton = styled.button`
   transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover {
-    background-color: ${({ theme }) => theme.primaryHoverColor || '#0056b3'}; /* Hover color */
+    background-color: ${({ theme }) => theme.primaryHoverColor || '#0056b3'};
     transform: scale(1.1);
   }
 
@@ -33,9 +33,9 @@ const AddButton = styled.button`
 
 const RoundButton = () => {
   return (
-    <AddButton>
-        <Link to={'/car-details'} style={{textDecoration:'none' ,color:'white'}}>
-      <FaPlus />
+    <AddButton className="step-2">
+      <Link to="/car-details" style={{ textDecoration: 'none', color: 'white' }}>
+        <FaPlus />
       </Link>
     </AddButton>
   );
